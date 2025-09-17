@@ -1,0 +1,7 @@
+{
+  "name": "taller-wallpapers",
+  "integrations": {
+    "capacitor": {}
+  },
+  "type": "angular"
+}
