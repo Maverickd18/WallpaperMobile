@@ -4,6 +4,7 @@ import { Component, OnInit } from '@angular/core';
   selector: 'app-update-user',
   templateUrl: './update-user.page.html',
   styleUrls: ['./update-user.page.scss'],
+  standalone:false
 })
 export class UpdateUserPage implements OnInit {
 

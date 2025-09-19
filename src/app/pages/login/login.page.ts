@@ -7,12 +7,11 @@ import { UserService } from 'src/app/services/user-service';
   selector: 'app-login',
   templateUrl: './login.page.html',
   styleUrls: ['./login.page.scss'],
+  standalone:false
 })
 export class LoginPage implements OnInit {
  
-
-
-  constructor(private userService: UserService, private router:Router,) { }
+  constructor() { }
 
   ngOnInit() {
   }
