@@ -1,5 +1,31 @@
 <ion-content [fullscreen]="true">
-<h1>Login</h1>
+  <h1>{{ 'LOGIN' | translate }}</h1>
 
+  <form [formGroup]="loginForm" (ngSubmit)="login()">
 
+    <app-input
+      [label]="'EMAIL' | translate"
+      type="email"
+      formControlName="email">
+    </app-input>
+
+    <app-input
+      [label]="'PASSWORD' | translate"
+      type="password"
+      formControlName="password">
+    </app-input>
+
+    <div *ngIf="errorMsg" class="error-msg">
+      {{ errorMsg }}
+    </div>
+
+    <app-button
+      [waittext]="'LOGIN_BUTTON' | translate"
+      type="submit">
+    </app-button>
+  </form>
+
+  <ion-button fill="clear" routerLink="/register">
+    {{ 'NO_ACCOUNT' | translate }} {{ 'REGISTER' | translate }}
+  </ion-button>
 </ion-content>

@@ -1,0 +1,10 @@
+{
+  "LOGIN": "Iniciar sesión",
+  "EMAIL": "Correo electrónico",
+  "PASSWORD": "Contraseña",
+  "LOGIN_BUTTON": "Entrar",
+  "REGISTER": "Registrarse",
+  "REGISTER_BUTTON": "Crear cuenta",
+  "HAVE_ACCOUNT": "¿Ya tienes cuenta?",
+  "NO_ACCOUNT": "¿No tienes cuenta?"
+}

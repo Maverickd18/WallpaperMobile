@@ -1,13 +1,49 @@
-<ion-header [translucent]="true">
-  <ion-toolbar>
-    <ion-title>register</ion-title>
-  </ion-toolbar>
-</ion-header>
+<<ion-content [fullscreen]="true">
+  <h1>{{ 'REGISTER' | translate }}</h1>
 
-<ion-content [fullscreen]="true">
-  <ion-header collapse="condense">
-    <ion-toolbar>
-      <ion-title size="large">register</ion-title>
-    </ion-toolbar>
-  </ion-header>
+  <form [formGroup]="registerForm" (ngSubmit)="register()">
+
+    <app-input
+      [label]="'NAME' | translate"
+      type="text"
+      formControlName="name">
+    </app-input>
+
+    <app-input
+      [label]="'LASTNAME' | translate"
+      type="text"
+      formControlName="lastname">
+    </app-input>
+
+    <app-input
+      [label]="'EMAIL' | translate"
+      type="email"
+      formControlName="email">
+    </app-input>
+
+    <app-input
+      [label]="'PASSWORD' | translate"
+      type="password"
+      formControlName="password">
+    </app-input>
+
+    <app-input
+      [label]="'CONFIRM_PASSWORD' | translate"
+      type="password"
+      formControlName="confirm">
+    </app-input>
+
+    <div *ngIf="errorMsg" class="error-msg">
+      {{ errorMsg }}
+    </div>
+
+    <app-button
+      [waittext]="'REGISTER_BUTTON' | translate"
+      type="submit">
+    </app-button>
+  </form>
+
+  <ion-button fill="clear" routerLink="/login">
+    {{ 'ALREADY_ACCOUNT' | translate }} {{ 'LOGIN' | translate }}
+  </ion-button>
 </ion-content>
