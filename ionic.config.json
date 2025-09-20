@@ -1,0 +1,7 @@
+{
+  "name": "EXAM MOBILE NEWS",
+  "integrations": {
+    "capacitor": {}
+  },
+  "type": "angular"
+}

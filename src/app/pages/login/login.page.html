@@ -1,0 +1,11 @@
+<ion-content [fullscreen]="true">
+<h1>Login</h1>
+<form (submit)="onsubmit()">
+<app-input label="EMAIL" type="email" [clear]="true" [control]="emailcontrol"></app-input>
+<app-input label="PASSWORD" type="password"[clear]="false" [control]="passwordcontrol"></app-input>
+<app-button waittext="LOG IN" type="submit"></app-button>
+<app-button waittext="REGISTER"type="button" (click)="gotoregister()"></app-button>
+</form>
+
+
+</ion-content>
