@@ -1,49 +1,43 @@
-<<ion-content [fullscreen]="true">
-  <h1>{{ 'REGISTER' | translate }}</h1>
+<ion-header>
+  <ion-toolbar>
+    <ion-title>Register</ion-title>
+  </ion-toolbar>
+</ion-header>
 
-  <form [formGroup]="registerForm" (ngSubmit)="register()">
+<ion-content>
+  <form [formGroup]="registerForm" (ngSubmit)="onRegister()">
 
-    <app-input
-      [label]="'NAME' | translate"
-      type="text"
-      formControlName="name">
-    </app-input>
+    <ion-item>
+      <ion-label position="floating">Nombre</ion-label>
+      <ion-input type="text" formControlName="firstName"></ion-input>
+    </ion-item>
 
-    <app-input
-      [label]="'LASTNAME' | translate"
-      type="text"
-      formControlName="lastname">
-    </app-input>
+    <ion-item>
+      <ion-label position="floating">Apellido</ion-label>
+      <ion-input type="text" formControlName="lastName"></ion-input>
+    </ion-item>
 
-    <app-input
-      [label]="'EMAIL' | translate"
-      type="email"
-      formControlName="email">
-    </app-input>
+    <ion-item>
+      <ion-label position="floating">Email</ion-label>
+      <ion-input type="email" formControlName="email"></ion-input>
+    </ion-item>
 
-    <app-input
-      [label]="'PASSWORD' | translate"
-      type="password"
-      formControlName="password">
-    </app-input>
+    <ion-item>
+      <ion-label position="floating">Password</ion-label>
+      <ion-input type="password" formControlName="password"></ion-input>
+    </ion-item>
 
-    <app-input
-      [label]="'CONFIRM_PASSWORD' | translate"
-      type="password"
-      formControlName="confirm">
-    </app-input>
+    <ion-item>
+      <ion-label position="floating">Confirmar Password</ion-label>
+      <ion-input type="password" formControlName="confirmPassword"></ion-input>
+    </ion-item>
 
-    <div *ngIf="errorMsg" class="error-msg">
-      {{ errorMsg }}
-    </div>
-
-    <app-button
-      [waittext]="'REGISTER_BUTTON' | translate"
-      type="submit">
-    </app-button>
+    <ion-button expand="full" type="submit" [disabled]="!registerForm.valid">
+      REGISTRAR
+    </ion-button>
   </form>
 
-  <ion-button fill="clear" routerLink="/login">
-    {{ 'ALREADY_ACCOUNT' | translate }} {{ 'LOGIN' | translate }}
+  <ion-button expand="full" color="medium" [routerLink]="['/login']">
+    Go to login
   </ion-button>
 </ion-content>

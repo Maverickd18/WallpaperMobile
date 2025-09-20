@@ -1,31 +1,27 @@
-<ion-content [fullscreen]="true">
-  <h1>{{ 'LOGIN' | translate }}</h1>
+<ion-header>
+  <ion-toolbar>
+    <ion-title>Login</ion-title>
+  </ion-toolbar>
+</ion-header>
 
-  <form [formGroup]="loginForm" (ngSubmit)="login()">
+<ion-content>
+  <form [formGroup]="loginForm" (ngSubmit)="onLogin()">
+    <ion-item>
+      <ion-label position="floating">Email</ion-label>
+      <ion-input type="email" formControlName="email"></ion-input>
+    </ion-item>
 
-    <app-input
-      [label]="'EMAIL' | translate"
-      type="email"
-      formControlName="email">
-    </app-input>
+    <ion-item>
+      <ion-label position="floating">Password</ion-label>
+      <ion-input type="password" formControlName="password"></ion-input>
+    </ion-item>
 
-    <app-input
-      [label]="'PASSWORD' | translate"
-      type="password"
-      formControlName="password">
-    </app-input>
-
-    <div *ngIf="errorMsg" class="error-msg">
-      {{ errorMsg }}
-    </div>
-
-    <app-button
-      [waittext]="'LOGIN_BUTTON' | translate"
-      type="submit">
-    </app-button>
+    <ion-button expand="full" type="submit" [disabled]="!loginForm.valid">
+      LOGIN
+    </ion-button>
   </form>
 
-  <ion-button fill="clear" routerLink="/register">
-    {{ 'NO_ACCOUNT' | translate }} {{ 'REGISTER' | translate }}
+  <ion-button expand="full" color="medium" [routerLink]="['/register']">
+    Go to Register
   </ion-button>
 </ion-content>
