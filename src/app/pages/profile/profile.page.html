@@ -1,0 +1,35 @@
+<ion-content [fullscreen]="true" class="profile-content">
+  <div class="profile-header">
+    <h1>My Profile</h1>
+    <p>Update your personal information</p>
+  </div>
+
+  <form [formGroup]="profileForm" (ngSubmit)="onUpdate()" class="profile-form">
+
+    <app-input 
+      label="NAME" 
+      type="text" 
+      [control]="getControl('name')">
+    </app-input>
+
+    <app-input 
+      label="LASTNAME" 
+      type="text" 
+      [control]="getControl('lastName')">
+    </app-input>
+
+    <!-- 🔒 email deshabilitado por FormControl -->
+    <app-input 
+      label="EMAIL" 
+      type="email" 
+      [control]="getControl('email')">
+    </app-input>
+
+    <app-button waittext="UPDATE" type="submit"></app-button>
+    <app-button waittext="BACK TO HOME" type="button" (click)="goHome()"></app-button>
+    <app-button waittext="LOG OUT" type="button" (click)="onLogout()"></app-button>
+  </form>
+
+  <ion-text color="danger" *ngIf="errorMsg">{{ errorMsg }}</ion-text>
+  <ion-text color="success" *ngIf="successMsg">{{ successMsg }}</ion-text>
+</ion-content>

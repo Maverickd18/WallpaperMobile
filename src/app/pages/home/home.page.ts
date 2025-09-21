@@ -17,10 +17,7 @@ export class HomePage implements OnInit {
   ngOnInit() {
     
   }
-  logout() {
-    this.router.navigate(['/login']);
-  }
-  profile() {
+  goToProfile() {
     this.router.navigate(['/profile']);
   }
  

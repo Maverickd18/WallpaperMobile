@@ -45,7 +45,7 @@ export class RegisterPage implements OnInit {
     }
 
     try {
-      await this.authService.register(
+      await this.authService.register1(
         this.emailControl.value ?? '',
         this.passwordControl.value ?? ''
       );

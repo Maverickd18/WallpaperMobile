@@ -1,9 +1,12 @@
 <ion-content [fullscreen]="true" class="ion-padding">
-    <h1>Welcome to the Home Page!</h1>
-    <p>You are successfully logged in.</p>
-    <app-button 
-        waittext="LOG OUT" 
-        type="button" 
-        (click)="logout()">
-    </app-button>
+    <h1>Welcome to the Home Page</h1>
+    <p>You can put your favorite wallpaper</p>
+  <ion-fab vertical="bottom" horizontal="end" slot="fixed">
+  <app-button 
+    type="button" 
+    waittext="Perfil" 
+    (click)="goToProfile()">
+  </app-button>
+</ion-fab>
+    
 </ion-content>
