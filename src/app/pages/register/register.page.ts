@@ -2,7 +2,9 @@ import { Component, OnInit } from '@angular/core';
 import { FormControl, Validators } from '@angular/forms';
 import { Router } from '@angular/router';
 import { AlertController } from '@ionic/angular';
+import { Userdata } from 'src/app/interfaces/userdata';
 import { AuthService } from 'src/app/services/auth';
+import { Database } from 'src/app/services/database';
 
 
 @Component({
@@ -22,7 +24,8 @@ export class RegisterPage implements OnInit {
   constructor(
     private router: Router,
     private alertCtrl: AlertController,
-    private authService: AuthService
+    private authService: AuthService,
+    private database: Database
   ) {}
 
   ngOnInit() {}
@@ -46,7 +49,12 @@ export class RegisterPage implements OnInit {
         this.emailControl.value ?? '',
         this.passwordControl.value ?? ''
       );
-
+      const userdata: Userdata={
+        name:this.nameControl.value||'',
+        lastName:this.lastNameControl.value||'',
+        wallpapers:[]
+      }
+      await this.database.addDocument(userdata,'users');
       this.showAlert('Success', 'User registered successfully ✅');
       this.router.navigate(['/login']);
     } catch (err: any) {
