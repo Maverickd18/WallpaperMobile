@@ -1,8 +1,9 @@
 import { Component, OnInit } from '@angular/core';
-import { FormBuilder, FormGroup, FormControl, Validators } from '@angular/forms';
+import { FormControl, Validators } from '@angular/forms';
 import { Router } from '@angular/router';
-import { v4 as uuidv4 } from 'uuid';
 import { AlertController } from '@ionic/angular';
+import { AuthService } from 'src/app/services/auth';
+
 
 @Component({
   selector: 'app-register',
@@ -12,51 +13,57 @@ import { AlertController } from '@ionic/angular';
 })
 export class RegisterPage implements OnInit {
 
-  nameControl: FormControl = new FormControl('', [Validators.required])
-  lastNameControl: FormControl = new FormControl('', [Validators.required])
-  emailControl: FormControl = new FormControl('', [Validators.required, Validators.email])
-  passwordControl: FormControl = new FormControl('', [Validators.required])
-  CONFIRMPasswordControl: FormControl = new FormControl('', [Validators.required])
-  constructor( private router: Router,private alertCtrl: AlertController) { }
+  nameControl = new FormControl('', [Validators.required]);
+  lastNameControl = new FormControl('', [Validators.required]);
+  emailControl = new FormControl('', [Validators.required, Validators.email]);
+  passwordControl = new FormControl('', [Validators.required]);
+  CONFIRMPasswordControl = new FormControl('', [Validators.required]);
 
-  ngOnInit() {
-    
-  }
+  constructor(
+    private router: Router,
+    private alertCtrl: AlertController,
+    private authService: AuthService
+  ) {}
+
+  ngOnInit() {}
 
   async onsubmit() {
+    if (!this.passwordControl.valid 
+      || !this.emailControl.valid 
+      || !this.nameControl.valid 
+      || !this.lastNameControl.valid) {
+      this.showAlert('Error', 'Fill all the fields');
+      return;
+    }
 
-// Verifica si los campos están vacíos
-  if (!this.passwordControl.valid 
-    || !this.emailControl.valid 
-    || !this.nameControl.valid 
-    || !this.lastNameControl.valid ) {
-    console.log('fill all the fields');
-    return;
-  }
+    if ((this.passwordControl.value ?? '').trim() !== (this.CONFIRMPasswordControl.value ?? '').trim()) {
+      this.showAlert('Error', 'Passwords do not match');
+      return;
+    }
 
-  // Verifica el formato del email
-  if (!this.emailControl.valid) {
-    console.log('Invalid email format');
-    return;
-  }
+    try {
+      await this.authService.register(
+        this.emailControl.value ?? '',
+        this.passwordControl.value ?? ''
+      );
 
-
-   
- if (this.passwordControl.value.trim() !== this.CONFIRMPasswordControl.value.trim()) {
-  const alert = await this.alertCtrl.create({
-    header: 'Error',
-    message: 'Passwords do not match',
-    buttons: ['OK']
-  });
-  await alert.present();
-  return;
-}
-
-
+      this.showAlert('Success', 'User registered successfully ✅');
+      this.router.navigate(['/login']);
+    } catch (err: any) {
+      this.showAlert('Registration failed', err.message || 'Error creating user');
+    }
   }
 
   gotologin() {
     this.router.navigate(['/login']);
   }
-}
 
+  private async showAlert(header: string, message: string) {
+    const alert = await this.alertCtrl.create({
+      header,
+      message,
+      buttons: ['OK']
+    });
+    await alert.present();
+  }
+}
