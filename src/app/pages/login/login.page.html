@@ -1,11 +1,37 @@
-<ion-content [fullscreen]="true">
-<h1>Login</h1>
-<form (submit)="onsubmit()">
-<app-input label="EMAIL" type="email" [clear]="true" [control]="emailControl"></app-input>
-<app-input label="PASSWORD" type="password"[clear]="false" [control]="passwordControl"></app-input>
-<app-button waittext="LOG IN" type="submit"></app-button>
-<app-button waittext="REGISTER"type="button" (click)="gotoregister()"></app-button>
-</form>
+<ion-content [fullscreen]="true" class="login-content">
 
+  <div class="background-shapes"></div> 
+
+  <div class="login-header animate-fade-in">
+    <h1>WALLPAPERS MDJDS</h1>
+    <p>YOU CAN CHOOSE AN  Amazing WALLPAPER</p>
+  </div>
+
+  <form (submit)="onsubmit()" class="login-form animate-slide-up">
+    <app-input 
+      label="EMAIL" 
+      type="email" 
+      [clear]="true" 
+      [control]="emailControl">
+    </app-input>
+
+    <app-input 
+      label="PASSWORD" 
+      type="password" 
+      [clear]="false" 
+      [control]="passwordControl">
+    </app-input>
+
+    <app-button 
+      waittext="LOG IN" 
+      type="submit">
+    </app-button>
+
+    <app-button 
+      waittext="REGISTER" 
+      type="button" 
+      (click)="gotoregister()">
+    </app-button>
+  </form>
 
 </ion-content>

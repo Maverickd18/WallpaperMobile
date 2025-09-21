@@ -23,6 +23,9 @@ export class AuthService {
   logout() {
     return signOut(this.auth);
   }
+  isauthenticated(): boolean {
+    return this.auth.currentUser !== null;
+  }
 
   // Estado del usuario (observable)
   getCurrentUser(): Observable<User | null> {
