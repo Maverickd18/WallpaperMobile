@@ -40,22 +40,23 @@ export class AuthService {
     return signInWithEmailAndPassword(this.auth, email, password);
   }
 
-  // Otra forma de registrar
+ 
   register1(email: string, password: string) {
     return createUserWithEmailAndPassword(this.auth, email, password);
   }
 
-  // Logout
+ 
   logout() {
-    return signOut(this.auth);
-  }
+  return signOut(this.auth).then(() => {
+    localStorage.clear();
+    sessionStorage.clear();
+  });
+}
 
-  // Saber si está autenticado
   isauthenticated(): boolean {
     return this.auth.currentUser !== null;
   }
 
-  // Estado del usuario como observable
   getCurrentUser(): Observable<User | null> {
     return new Observable((subscriber) => {
       onAuthStateChanged(this.auth, (user) => {
@@ -64,8 +65,7 @@ export class AuthService {
     });
   }
 
- //  Actualizar perfil (solo nombre y apellido)
-// ✅ Actualizar perfil (crea el doc si no existe, o actualiza si ya está)
+
 async updateUser(data: { name: string; lastName: string }) {
   if (!this.auth.currentUser) throw new Error('No user logged in');
   const uid = this.auth.currentUser.uid;
@@ -74,14 +74,15 @@ async updateUser(data: { name: string; lastName: string }) {
   await setDoc(userRef, {
     name: data.name,
     lastName: data.lastName
-  }, { merge: true }); // 🔹 merge asegura que no se borren otros campos (ej: email, uid)
+  }, { merge: true }); // 🔹 
 }
 
 
-  //  Obtener perfil desde Firestore
+  
   async getUserProfile(uid: string) {
     const userRef = doc(this.firestore, `users/${uid}`);
     const snap = await getDoc(userRef);
     return snap.exists() ? snap.data() : null;
   }
+
 }

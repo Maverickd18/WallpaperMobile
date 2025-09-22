@@ -22,7 +22,12 @@ export class LoginPage implements OnInit {
     private authService: AuthService
   ) {}
 
+
   ngOnInit() {}
+    ionViewWillEnter() {
+    this.emailControl.reset();
+    this.passwordControl.reset();
+  }
 
   async onsubmit() {
     const email = this.emailControl.value ?? '';
