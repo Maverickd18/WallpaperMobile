@@ -1,12 +1,28 @@
 <ion-content [fullscreen]="true" class="ion-padding">
-    <h1>Welcome to the Home Page</h1>
-    <p>You can put your favorite wallpaper</p>
+  <h1>Welcome to the Home Page</h1>
+  <p>You can put your favorite wallpaper</p>
+
+  <!-- Imagen cargada -->
+  <div *ngIf="imageUrl" class="preview">
+    <ion-img [src]="imageUrl"></ion-img>
+  </div>
+
+  <!-- Botón Perfil -->
   <ion-fab vertical="bottom" horizontal="end" slot="fixed">
-  <app-button 
-    type="button" 
-    waittext="Perfil" 
-    (click)="goToProfile()">
-  </app-button>
-</ion-fab>
-    
+    <app-button type="button" waittext="Perfil" (click)="goToProfile()"></app-button>
+  </ion-fab>
+
+  <!-- Input oculto -->
+  <input type="file" accept="image/*" hidden #fileInput (change)="onAddWallpaperClick($event)" />
+
+  <!-- Botón Agregar Wallpaper -->
+  <ion-fab vertical="bottom" horizontal="start" slot="fixed">
+    <app-button type="button" waittext="Agregar Wallpaper" (click)="fileInput.click()"></app-button>
+  </ion-fab>
+
+  
+ 
+
+  
+  <ion-toast *ngIf="showSuccess" message="Fondo agregado con éxito" duration="2000" color="success"></ion-toast>
 </ion-content>
