@@ -1,7 +1,9 @@
+// home.page.ts
 import { Component, OnInit } from '@angular/core';
 import { Router } from '@angular/router';
 import { UploaderService } from 'src/app/core/providers/uploader/uploader';
-import { supabase } from 'src/app/services/databasesupa';
+import { AuthService } from 'src/app/services/auth';
+import { WallpaperService } from 'src/app/services/wallpaper';
 
 @Component({
   selector: 'app-home',
@@ -10,59 +12,69 @@ import { supabase } from 'src/app/services/databasesupa';
   standalone: false
 })
 export class HomePage implements OnInit {
+  wallpapers: { id: string; url: string; path: string; name: string }[] = [];
   showSuccess = false;
-  images: { url: string, path: string }[] = []; // lista de wallpapers
+  uid = '';
 
-  private userId: string = '';
+  constructor(
+    private uploader: UploaderService,
+    private authService: AuthService,
+    private wallpaperService: WallpaperService,
+    private router: Router
+  ) {}
 
-  constructor(private router: Router, private uploader: UploaderService) {}
+  ngOnInit() {
+    this.authService.getCurrentUser().subscribe(async (user) => {
+      if (user) {
+        this.uid = user.uid;
+        await this.loadWallpapers();
+      } else {
+        this.wallpapers = [];
+      }
+    });
+  }
 
-  async ngOnInit() {
-    // obtener usuario actual
-    const { data } = await supabase.auth.getUser();
-    this.userId = data.user?.id || '';
+  async loadWallpapers() {
+    this.wallpapers = await this.wallpaperService.listByUser(this.uid);
+  }
 
-    if (this.userId) {
-      await this.loadWallpapers();
+  async onAddWallpaperClick(event: any) {
+    const file = event.target.files?.[0];
+    if (!file || !this.uid) return;
+
+    try {
+      const res = await this.uploader.uploadFile('images', this.uid, file);
+      const id = await this.wallpaperService.add(this.uid, res.path, res.publicUrl, file.name);
+      // actualizar la lista en UI
+this.wallpapers.unshift({ 
+  id, 
+  path: res.path, 
+  url: res.publicUrl, 
+  name: file.name 
+});
+      this.showSuccess = true;
+      setTimeout(() => (this.showSuccess = false), 2000);
+    } catch (err) {
+      console.error('Error subiendo wallpaper:', err);
     }
   }
 
- async loadWallpapers() {
-  this.images = await this.uploader.list('images', this.userId);
-}
-
+  async deleteWallpaper(wp: { id: string; path: string }) {
+    try {
+      await this.uploader.deleteFile('images', wp.path);
+      await this.wallpaperService.deleteMetadata(wp.id);
+      this.wallpapers = this.wallpapers.filter(w => w.id !== wp.id);
+    } catch (err) {
+      console.error('Error eliminando wallpaper:', err);
+    }
+  }
 
   goToProfile() {
     this.router.navigate(['/profile']);
+    // navegar
   }
 
   onLogoutClick() {
-    this.router.navigate(['/login']);
-  }
-
-  // subir y refrescar
-  async onAddWallpaperClick(event: any) {
-    const file = event.target.files[0];
-    if (!file) return;
-
-    const reader = new FileReader();
-    reader.onload = async () => {
-      const base64 = (reader.result as string).split(',')[1];
-      const path = await this.uploader.upload('images', this.userId, file.name, file.type, base64);
-      if (path) {
-        this.showSuccess = true;
-        await this.loadWallpapers(); // refrescamos lista
-        setTimeout(() => (this.showSuccess = false), 2000);
-      }
-    };
-    reader.readAsDataURL(file);
-  }
-
-  // eliminar wallpaper
-  async onDeleteWallpaper(path: string) {
-    const ok = await this.uploader.remove('images', path);
-    if (ok) {
-      this.images = this.images.filter(img => img.path !== path);
-    }
+    // cerrar sesión
   }
 }
