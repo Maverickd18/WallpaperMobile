@@ -6,3 +6,4 @@ export const supabase = createClient(
   environment.SUPABASE.URL,
   environment.SUPABASE.API_KEY
 );
+

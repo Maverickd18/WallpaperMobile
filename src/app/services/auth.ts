@@ -65,17 +65,18 @@ export class AuthService {
   }
 
  //  Actualizar perfil (solo nombre y apellido)
+// ✅ Actualizar perfil (crea el doc si no existe, o actualiza si ya está)
 async updateUser(data: { name: string; lastName: string }) {
   if (!this.auth.currentUser) throw new Error('No user logged in');
   const uid = this.auth.currentUser.uid;
 
-  // 🔹 1. NO tocamos el email, solo nombre y apellido
   const userRef = doc(this.firestore, `users/${uid}`);
-  await updateDoc(userRef, {
+  await setDoc(userRef, {
     name: data.name,
     lastName: data.lastName
-  });
+  }, { merge: true }); // 🔹 merge asegura que no se borren otros campos (ej: email, uid)
 }
+
 
   //  Obtener perfil desde Firestore
   async getUserProfile(uid: string) {

@@ -1,0 +1,24 @@
+.profile-content {
+  padding: 16px;
+}
+
+.profile-header {
+  margin-bottom: 24px;
+}
+
+.profile-form {
+  display: flex;
+  flex-direction: column;
+  gap: 16px;
+}
+
+.profile-actions {
+  display: flex;
+  flex-direction: column;
+  gap: 12px;
+  margin-top: 20px;
+}
+
+.profile-messages {
+  margin-top: 20px;
+}

@@ -1,28 +1,33 @@
 <ion-content [fullscreen]="true" class="ion-padding">
   <h1>Welcome to the Home Page</h1>
-  <p>You can put your favorite wallpaper</p>
+  <p>Tus wallpapers</p>
 
-  <!-- Imagen cargada -->
-  <div *ngIf="imageUrl" class="preview">
-    <ion-img [src]="imageUrl"></ion-img>
-  </div>
+  <!-- Galería de imágenes -->
+  <ion-grid>
+    <ion-row>
+      <ion-col size="6" *ngFor="let img of images">
+        <ion-card>
+          <ion-img [src]="img.url"></ion-img>
+          <ion-button expand="block" color="danger" (click)="onDeleteWallpaper(img.path)">
+            Eliminar
+          </ion-button>
+        </ion-card>
+      </ion-col>
+    </ion-row>
+  </ion-grid>
 
-  <!-- Botón Perfil -->
-  <ion-fab vertical="bottom" horizontal="end" slot="fixed">
-    <app-button type="button" waittext="Perfil" (click)="goToProfile()"></app-button>
-  </ion-fab>
+   <input type="file" accept="image/*" hidden #fileInput (change)="onAddWallpaperClick($event)" />
 
-  <!-- Input oculto -->
-  <input type="file" accept="image/*" hidden #fileInput (change)="onAddWallpaperClick($event)" />
-
-  <!-- Botón Agregar Wallpaper -->
   <ion-fab vertical="bottom" horizontal="start" slot="fixed">
     <app-button type="button" waittext="Agregar Wallpaper" (click)="fileInput.click()"></app-button>
   </ion-fab>
 
-  
+  <ion-fab vertical="bottom" horizontal="end" slot="fixed">
+    <app-button type="button" waittext="Perfil" (click)="goToProfile()"></app-button>
+  </ion-fab>
+
  
 
-  
-  <ion-toast *ngIf="showSuccess" message="Fondo agregado con éxito" duration="2000" color="success"></ion-toast>
+  <!-- Toast -->
+  <ion-toast *ngIf="showSuccess" message="✅ Fondo agregado con éxito" duration="2000" color="success"></ion-toast>
 </ion-content>

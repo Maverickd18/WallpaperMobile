@@ -2,7 +2,7 @@ import { Component, OnInit } from '@angular/core';
 import { FormBuilder, FormControl, FormGroup, Validators } from '@angular/forms';
 import { Router } from '@angular/router';
 import { ToastController } from '@ionic/angular';
-import { AuthService } from 'src/app/services/auth';
+import { AuthService } from 'src/app/services/auth';  // tu AuthService
 
 @Component({
   selector: 'app-profile',
@@ -14,6 +14,7 @@ export class ProfilePage implements OnInit {
   profileForm!: FormGroup;
   errorMsg = '';
   successMsg = '';
+  uid: string = '';
 
   constructor(
     private fb: FormBuilder,
@@ -26,31 +27,36 @@ export class ProfilePage implements OnInit {
     this.profileForm = this.fb.group({
       name: ['', Validators.required],
       lastName: ['', Validators.required],
-      email: [{ value: '', disabled: true }, [Validators.required, Validators.email]] // 🔒 email bloqueado aquí
+      email: [{ value: '', disabled: true }, [Validators.required, Validators.email]] // 🔒 email bloqueado
     });
 
-    // ✅ cargar datos del usuario actual
+    // ✅ escuchamos usuario logueado
     this.authService.getCurrentUser().subscribe(async (user) => {
       if (user) {
+        this.uid = user.uid;
         const profile = await this.authService.getUserProfile(user.uid);
         if (profile) {
           this.profileForm.patchValue(profile);
+        } else {
+          // si no hay doc en Firestore, rellenamos con email
+          this.profileForm.patchValue({
+            email: user.email ?? ''
+          });
         }
       }
     });
   }
 
-  // Acceso rápido a controles
   getControl(control: string): FormControl {
     return this.profileForm.get(control) as FormControl;
   }
 
   // ✅ actualizar perfil (solo nombre y apellido)
   async onUpdate() {
-    if (this.profileForm.invalid) return;
+    if (this.profileForm.invalid || !this.uid) return;
 
     try {
-      const { name, lastName } = this.profileForm.getRawValue(); // incluye disabled si se usa getRawValue()
+      const { name, lastName } = this.profileForm.getRawValue();
 
       await this.authService.updateUser({ name, lastName });
 
