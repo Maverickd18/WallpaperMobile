@@ -1,8 +1,9 @@
-// home.page.ts
+// src/app/pages/home/home.page.ts
 import { Component, OnInit } from '@angular/core';
 import { Router } from '@angular/router';
 import { UploaderService } from 'src/app/core/providers/uploader/uploader';
 import { AuthService } from 'src/app/services/auth';
+import { TranslationService } from 'src/app/services/translation';
 import { WallpaperService } from 'src/app/services/wallpaper';
 
 @Component({
@@ -20,7 +21,8 @@ export class HomePage implements OnInit {
     private uploader: UploaderService,
     private authService: AuthService,
     private wallpaperService: WallpaperService,
-    private router: Router
+    private router: Router,
+    public translate: TranslationService
   ) {}
 
   ngOnInit() {
@@ -34,6 +36,11 @@ export class HomePage implements OnInit {
     });
   }
 
+  // Método para cambiar idioma
+  toggleLanguage() {
+    this.translate.toggleLanguage();
+  }
+
   async loadWallpapers() {
     this.wallpapers = await this.wallpaperService.listByUser(this.uid);
   }
@@ -45,13 +52,13 @@ export class HomePage implements OnInit {
     try {
       const res = await this.uploader.uploadFile('images', this.uid, file);
       const id = await this.wallpaperService.add(this.uid, res.path, res.publicUrl, file.name);
-      // actualizar la lista en UI
-this.wallpapers.unshift({ 
-  id, 
-  path: res.path, 
-  url: res.publicUrl, 
-  name: file.name 
-});
+      
+      this.wallpapers.unshift({ 
+        id, 
+        path: res.path, 
+        url: res.publicUrl, 
+        name: file.name 
+      });
       this.showSuccess = true;
       setTimeout(() => (this.showSuccess = false), 2000);
     } catch (err) {
@@ -71,7 +78,6 @@ this.wallpapers.unshift({
 
   goToProfile() {
     this.router.navigate(['/profile']);
-    // navegar
   }
 
   onLogoutClick() {

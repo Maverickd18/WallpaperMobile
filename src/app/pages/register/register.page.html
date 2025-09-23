@@ -1,55 +1,69 @@
+<!-- src/app/pages/register/register.page.html -->
 <ion-content [fullscreen]="true" class="register-content">
+
+  <!-- Botón para cambiar idioma -->
+  <div class="language-toggle ion-text-right ion-padding-horizontal">
+    <ion-button fill="clear" (click)="toggleLanguage()">
+      <ion-icon name="language"></ion-icon>
+      {{ translate.currentLang === 'es' ? 'EN' : 'ES' }}
+    </ion-button>
+  </div>
 
   <div class="background-shapes"></div>
 
+  <!-- Language Selector -->
+  <div class="language-selector-container">
+   
+  </div>
+
   <div class="register-header animate-fade-in">
-    <h1>Create Account </h1>
-    <p>Join us and explore amazing wallpapers </p>
+    <h1>{{ translate.t('register.title') }}</h1>
+    <p>{{ translate.t('register.subtitle') }}</p>
   </div>
 
   <form (submit)="onsubmit()" class="register-form animate-slide-up">
     <app-input 
-      label="NAME" 
+      [label]="translate.t('register.name')"
       type="text" 
       [clear]="true" 
       [control]="nameControl">
     </app-input>
 
     <app-input 
-      label="LASTNAME" 
+      [label]="translate.t('register.lastname')"
       type="text" 
       [clear]="true" 
       [control]="lastNameControl">
     </app-input>
 
     <app-input 
-      label="EMAIL" 
+      [label]="translate.t('register.email')"
       type="email" 
       [clear]="true" 
       [control]="emailControl">
     </app-input>
 
     <app-input 
-      label="PASSWORD" 
+      [label]="translate.t('register.password')"
       type="password"
       [clear]="false" 
       [control]="passwordControl">
     </app-input>
 
     <app-input 
-      label="CONFIRM PASSWORD" 
+      [label]="translate.t('register.confirmPassword')"
       type="password" 
       [clear]="false" 
       [control]="CONFIRMPasswordControl">
     </app-input>
 
     <app-button 
-      waittext="REGISTER" 
+      [waittext]="translate.t('register.registerBtn')"
       type="submit">
     </app-button>
 
     <app-button 
-      waittext="BACK" 
+      [waittext]="translate.t('register.backBtn')"
       type="button" 
       (click)="gotologin()">
     </app-button>

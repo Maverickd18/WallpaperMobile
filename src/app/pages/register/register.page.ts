@@ -1,3 +1,4 @@
+// src/app/pages/register/register.page.ts
 import { Component, OnInit } from '@angular/core';
 import { FormControl, Validators } from '@angular/forms';
 import { Router } from '@angular/router';
@@ -5,7 +6,7 @@ import { AlertController } from '@ionic/angular';
 import { Userdata } from 'src/app/interfaces/userdata';
 import { AuthService } from 'src/app/services/auth';
 import { Database } from 'src/app/services/database';
-
+import { TranslationService } from 'src/app/services/translation';
 
 @Component({
   selector: 'app-register',
@@ -14,7 +15,6 @@ import { Database } from 'src/app/services/database';
   standalone: false
 })
 export class RegisterPage implements OnInit {
-
   nameControl = new FormControl('', [Validators.required]);
   lastNameControl = new FormControl('', [Validators.required]);
   emailControl = new FormControl('', [Validators.required, Validators.email]);
@@ -25,22 +25,28 @@ export class RegisterPage implements OnInit {
     private router: Router,
     private alertCtrl: AlertController,
     private authService: AuthService,
-    private database: Database
+    private database: Database,
+    public translate: TranslationService
   ) {}
 
   ngOnInit() {}
+
+  // AGREGAR este método para cambiar idioma
+  toggleLanguage() {
+    this.translate.toggleLanguage();
+  }
 
   async onsubmit() {
     if (!this.passwordControl.valid 
       || !this.emailControl.valid 
       || !this.nameControl.valid 
       || !this.lastNameControl.valid) {
-      this.showAlert('Error', 'Fill all the fields');
+      this.showAlert(this.translate.t('common.error'), this.translate.t('register.fillFields'));
       return;
     }
 
     if ((this.passwordControl.value ?? '').trim() !== (this.CONFIRMPasswordControl.value ?? '').trim()) {
-      this.showAlert('Error', 'Passwords do not match');
+      this.showAlert(this.translate.t('common.error'), this.translate.t('register.passwordsNoMatch'));
       return;
     }
 
@@ -49,16 +55,19 @@ export class RegisterPage implements OnInit {
         this.emailControl.value ?? '',
         this.passwordControl.value ?? ''
       );
-      const userdata: Userdata={
-        name:this.nameControl.value||'',
-        lastName:this.lastNameControl.value||'',
-        wallpapers:[]
+      const userdata: Userdata = {
+        name: this.nameControl.value || '',
+        lastName: this.lastNameControl.value || '',
+        wallpapers: []
       }
-      await this.database.addDocument(userdata,'users');
-      this.showAlert('Success', 'User registered successfully ✅');
+      await this.database.addDocument(userdata, 'users');
+      this.showAlert(this.translate.t('common.success'), this.translate.t('register.successMsg'));
       this.router.navigate(['/login']);
     } catch (err: any) {
-      this.showAlert('Registration failed', err.message || 'Error creating user');
+      this.showAlert(
+        this.translate.t('register.failedMsg'), 
+        err.message || this.translate.t('register.errorCreatingUser')
+      );
     }
   }
 
@@ -70,7 +79,7 @@ export class RegisterPage implements OnInit {
     const alert = await this.alertCtrl.create({
       header,
       message,
-      buttons: ['OK']
+      buttons: [this.translate.t('common.ok')]
     });
     await alert.present();
   }

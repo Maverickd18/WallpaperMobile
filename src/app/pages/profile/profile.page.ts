@@ -1,8 +1,10 @@
+// src/app/pages/profile/profile.page.ts
 import { Component, OnInit } from '@angular/core';
 import { FormBuilder, FormControl, FormGroup, Validators } from '@angular/forms';
 import { Router } from '@angular/router';
 import { ToastController } from '@ionic/angular';
-import { AuthService } from 'src/app/services/auth';  // tu AuthService
+import { AuthService } from 'src/app/services/auth';
+import { TranslationService } from 'src/app/services/translation';
 
 @Component({
   selector: 'app-profile',
@@ -20,17 +22,17 @@ export class ProfilePage implements OnInit {
     private fb: FormBuilder,
     private authService: AuthService,
     private toastCtrl: ToastController,
-    private router: Router
+    private router: Router,
+    public translate: TranslationService
   ) {}
 
   ngOnInit() {
     this.profileForm = this.fb.group({
       name: ['', Validators.required],
       lastName: ['', Validators.required],
-      email: [{ value: '', disabled: true }, [Validators.required, Validators.email]] // 🔒 email bloqueado
+      email: [{ value: '', disabled: true }, [Validators.required, Validators.email]]
     });
 
-    // ✅ escuchamos usuario logueado
     this.authService.getCurrentUser().subscribe(async (user) => {
       if (user) {
         this.uid = user.uid;
@@ -38,7 +40,6 @@ export class ProfilePage implements OnInit {
         if (profile) {
           this.profileForm.patchValue(profile);
         } else {
-          // si no hay doc en Firestore, rellenamos con email
           this.profileForm.patchValue({
             email: user.email ?? ''
           });
@@ -47,11 +48,15 @@ export class ProfilePage implements OnInit {
     });
   }
 
+  // Método para cambiar idioma
+  toggleLanguage() {
+    this.translate.toggleLanguage();
+  }
+
   getControl(control: string): FormControl {
     return this.profileForm.get(control) as FormControl;
   }
 
-  // ✅ actualizar perfil (solo nombre y apellido)
   async onUpdate() {
     if (this.profileForm.invalid || !this.uid) return;
 
@@ -60,22 +65,22 @@ export class ProfilePage implements OnInit {
 
       await this.authService.updateUser({ name, lastName });
 
-      this.successMsg = 'Perfil actualizado ✅';
+      this.successMsg = this.translate.t('profile.updateSuccess');
       this.errorMsg = '';
 
       const toast = await this.toastCtrl.create({
-        message: 'Perfil actualizado ✅',
+        message: this.translate.t('profile.updateSuccess'),
         duration: 2000,
         color: 'success'
       });
       toast.present();
     } catch (err: any) {
       console.error(err);
-      this.errorMsg = 'Error al actualizar ❌';
+      this.errorMsg = this.translate.t('profile.updateError');
       this.successMsg = '';
 
       const toast = await this.toastCtrl.create({
-        message: 'Error al actualizar ❌',
+        message: this.translate.t('profile.updateError'),
         duration: 2000,
         color: 'danger'
       });

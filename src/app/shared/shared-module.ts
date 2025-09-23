@@ -5,6 +5,7 @@ import { ButtonComponent } from './componets/button/button.component';
 
 import { IonicModule } from '@ionic/angular';
 import { FormsModule, ReactiveFormsModule } from '@angular/forms';
+import { LanguageSelectorComponent } from './componets/language-selector/language-selector/language-selector.component';
 
 
 
@@ -12,6 +13,7 @@ import { FormsModule, ReactiveFormsModule } from '@angular/forms';
   declarations: [
     InputComponent,
     ButtonComponent,
+    LanguageSelectorComponent
   ],
   providers:[
 
@@ -25,7 +27,7 @@ import { FormsModule, ReactiveFormsModule } from '@angular/forms';
     FormsModule,
     ReactiveFormsModule,
   ],
-  exports:[ButtonComponent,InputComponent
+  exports:[ButtonComponent,InputComponent,LanguageSelectorComponent
   ]
 })
 export class SharedModule { }

@@ -1,26 +1,33 @@
 <ion-content [fullscreen]="true" class="profile-content">
 
+  <div class="language-toggle ion-text-right ion-padding-horizontal">
+    <ion-button fill="clear" (click)="toggleLanguage()">
+      <ion-icon name="language"></ion-icon>
+      {{ translate.currentLang === 'es' ? 'EN' : 'ES' }}
+    </ion-button>
+  </div>
+
   <div class="profile-header ion-text-center">
-    <h1>My Profile</h1>
-    <p>Update your personal information</p>
+    <h1>{{ translate.t('profile.title') || 'My Profile' }}</h1>
+    <p>{{ translate.t('profile.subtitle') || 'Update your personal information' }}</p>
   </div>
 
   <form [formGroup]="profileForm" (ngSubmit)="onUpdate()" class="profile-form">
 
     <app-input
-      label="NAME"
+      [label]="translate.t('profile.name') || 'NAME'"
       type="text"
       [control]="getControl('name')">
     </app-input>
 
     <app-input
-      label="LASTNAME"
+      [label]="translate.t('profile.lastName') || 'LASTNAME'"
       type="text"
       [control]="getControl('lastName')">
     </app-input>
 
     <app-input
-      label="EMAIL"
+      [label]="translate.t('profile.email') || 'EMAIL'"
       type="email"
       [control]="getControl('email')"
       [disabled]="true">
@@ -28,9 +35,13 @@
 
     <!-- Acciones -->
     <div class="profile-actions">
-      <app-button waittext="UPDATE" type="submit"></app-button>
-      <app-button waittext="BACK TO HOME" type="button" (click)="goHome()"></app-button>
-      <app-button waittext="LOG OUT" type="button" (click)="onLogout()"></app-button>
+      <app-button [waittext]="translate.t('update') || 'UPDATE'" type="submit"></app-button>
+      <app-button 
+      [waittext]="translate.t('register.backBtn')"
+      type="button" 
+      (click)="goHome()">
+    </app-button>
+      <app-button [waittext]="translate.t('logout') || 'LOG OUT'" type="button" (click)="onLogout()"></app-button>
     </div>
   </form>
 
