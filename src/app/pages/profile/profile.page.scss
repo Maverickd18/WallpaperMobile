@@ -1,15 +1,40 @@
 .profile-content {
-  padding: 16px;
+  --background: linear-gradient(135deg, #1d2671, #c33764);
+  display: flex;
+  flex-direction: column;
+  align-items: center;
+  justify-content: center;
+}
+
+.language-toggle {
+  margin-top: 10px;
 }
 
 .profile-header {
-  margin-bottom: 24px;
+  margin: 20px 0;
+  color: #fff;
+
+  h1 {
+    font-size: 2rem;
+    font-weight: bold;
+    animation: fadeInDown 0.8s ease-in-out;
+  }
+
+  p {
+    font-size: 1rem;
+    opacity: 0.8;
+  }
 }
 
 .profile-form {
-  display: flex;
-  flex-direction: column;
-  gap: 16px;
+  width: 90%;
+  max-width: 400px;
+  padding: 20px;
+  border-radius: 20px;
+  background: rgba(255, 255, 255, 0.1);
+  backdrop-filter: blur(15px);
+  box-shadow: 0 8px 32px rgba(0, 0, 0, 0.25);
+  animation: slideUp 0.8s ease;
 }
 
 .profile-actions {
@@ -17,8 +42,38 @@
   flex-direction: column;
   gap: 12px;
   margin-top: 20px;
+
+  app-button {
+    --border-radius: 12px;
+    font-weight: bold;
+  }
 }
 
 .profile-messages {
-  margin-top: 20px;
+  margin-top: 15px;
+  font-size: 0.9rem;
+  color: #fff;
+}
+
+/* Animaciones */
+@keyframes fadeInDown {
+  from {
+    opacity: 0;
+    transform: translateY(-20px);
+  }
+  to {
+    opacity: 1;
+    transform: translateY(0);
+  }
+}
+
+@keyframes slideUp {
+  from {
+    opacity: 0;
+    transform: translateY(30px);
+  }
+  to {
+    opacity: 1;
+    transform: translateY(0);
+  }
 }

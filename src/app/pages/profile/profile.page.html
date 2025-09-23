@@ -1,11 +1,6 @@
 <ion-content [fullscreen]="true" class="profile-content">
 
-  <div class="language-toggle ion-text-right ion-padding-horizontal">
-    <ion-button fill="clear" (click)="toggleLanguage()">
-      <ion-icon name="language"></ion-icon>
-      {{ translate.currentLang === 'es' ? 'EN' : 'ES' }}
-    </ion-button>
-  </div>
+  
 
   <div class="profile-header ion-text-center">
     <h1>{{ translate.t('profile.title') || 'My Profile' }}</h1>
@@ -35,14 +30,26 @@
 
     <!-- Acciones -->
     <div class="profile-actions">
-      <app-button [waittext]="translate.t('update') || 'UPDATE'" type="submit"></app-button>
+  <app-button [waittext]="translate.t('profile.update')" type="submit"></app-button>
+      
       <app-button 
-      [waittext]="translate.t('register.backBtn')"
-      type="button" 
-      (click)="goHome()">
-    </app-button>
-      <app-button [waittext]="translate.t('logout') || 'LOG OUT'" type="button" (click)="onLogout()"></app-button>
+        [waittext]="translate.t('profile.backToHome')" 
+        type="button" 
+        (click)="goHome()">
+      </app-button>
+      
+      <app-button 
+        [waittext]="translate.t('common.logout')" 
+        type="button" 
+        (click)="onLogout()">
+      </app-button>
     </div>
+    <div class="language-toggle ion-text-right ion-padding-horizontal">
+    <ion-button fill="clear" (click)="toggleLanguage()">
+      <ion-icon name="language"></ion-icon>
+      {{ translate.currentLang === 'es' ? 'EN' : 'ES' }}
+    </ion-button>
+  </div>
   </form>
 
   <!-- Mensajes de error / éxito -->
