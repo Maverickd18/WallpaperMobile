@@ -11,5 +11,5 @@ const providers = [Auth, File, NativeToast];
     CommonModule
   ],
   exports:[...providers]
-})
+}) 
 export class CoreModule { }
